@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:ng="http://angularjs.org" ng-app="ERMApp" ng-cloak>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    
+
+    
+
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+
+    <link rel="icon" href="">
+    <title>EWU Student Panel</title>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+    <!-- Bootstrap core CSS -->
+    <link href="/Assets/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/Assets/plugins/viewport/ie10-viewport-bug-workaround.css" rel="stylesheet" />
+    <link href="/Assets/plugins/font-awesome/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="/Assets/plugins/bundlealt/bundlealt.css" rel="stylesheet" />
+    <link href="/Assets/plugins/summernote/summernote.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+          <script src="http://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="http://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <style type="text/css">
+        .alert-success {
+            color: white !important;
+            background-color: #4cae4c !important;
+            border-color: #4cae4c !important;
+        }
+
+        .alert-danger {
+            color: white !important;
+            background-color: #C0392B !important;
+            border-color: #C0392B !important;
+        }
+
+        .left {
+            margin-left: 14%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top navbar-top top-nav">
+            <div class="container-fluid left">
+                <div class="navbar-header top-header">
+                    <a href="/Home/Index" class="navbar-brand">
+                        <img alt="logo" src="/Assets/img/logonn.png" style="max-height:60px;" />
+                    </a>
+                </div>
+
+                <div class="top-navbar">
+                    
+                    <div class="navbar-right">
+                        <div class="nav-user">
+                            <span style="color:white;">Hi, Aftab Kabir Limon</span>
+                            <div class="dropdown">
+                                <div class="thumb dropbtn">
+                                    <img src="/Documents/StudentProfile/profile.png" />
+                                </div>
+                                <div class="dropdown-content">
+                                    <span class="glyphicon glyphicon-triangle-top"></span>
+                                    <a href="/Home/Profile"><span class="glyphicon glyphicon-user"></span> View Profile</a>
+                                    <a href="/Home/ChangePassword"><span class="glyphicon glyphicon-transfer"></span> Change Password</a>
+                                    <a href="/Account/LogOut"><span class="glyphicon glyphicon-off"></span> Logout</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-notify">
+                            <a href="#">
+                                <span class="icon" aria-hidden="true">
+                                    <i class="fa fa-bell-o" style=" color: white; font-size: 20px; margin-top: 5px; "></i>
+                                </span> <span class="notify-numb">0</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--// end top bar -->
+        <style>
+            li:hover .subNav {
+                display: block;
+               
+            }
+        </style>
+        <div style="overflow:auto" class="sidebar-inverse side-navbar expanded">
+            <nav class="nav navbar-default" role="navigation">
+                <button class="navbar-expand-toggle" type="button"></button>
+                <ul>
+                    
+
+
+                    <li>
+                        <a href="/Home/Advising"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-registered"></i> <strong class="title">Advising</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li>
+                                    <a href="/Home/Advising">Advising</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/Home/ClassSchedule"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-school"></i>  <strong class="title">My Class Schedule</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/ClassSchedule">My Class Schedule</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/Home/AdvisingRulesStudent"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-book"></i> <strong class="title">Advising Rules</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li>
+                                    <a href="/Home/AdvisingRulesStudent">Advising Rules</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    
+
+
+
+                    <li>
+                        <a href="/ReportForms/rptGradeSheetStudent.aspx"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fa fa-sort-numeric-asc"></i>  <strong class="title">Grade Report</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            
+
+                            <ul>
+                                <li><a target="_blank" href="/ReportForms/rptGradeSheetStudent.aspx">Grade Report</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    
+
+                    <li>
+                        <a href="/Home/StudentSemesterDropWithdraw"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-trash"></i>  <strong class="title">Semester Drop</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/StudentSemesterDropWithdraw">Semester Drop</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <a href="/Home/ProgramCurriculumn"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-book-reader"></i>  <strong class="title">Curriculumn</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/ProgramCurriculumn">Curriculumn</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a href="/Home/StudentPaymentInstallment"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-coins"></i>  <strong class="title">Installment Payment</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/StudentPaymentInstallment">Installment Payment</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a href="/Home/StudentLedger"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-money-check-alt"></i>  <strong class="title">My Accounts Ledger</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/StudentLedger">My Accounts Ledger</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    
+
+
+                    <li>
+                        <a href="/Home/OfferedCoursesStudent"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-book-open"></i>  <strong class="title">Offered Courses</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/OfferedCoursesStudent">Offered Courses</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a href="/Home/StudentDegreeReview"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-book"></i> <strong class="title">Degree Review</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li>
+                                    <a href="/Home/StudentDegreeReview">Degree Review</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a href="/Home/FacultyEvaluation"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-fill"></i>  <strong class="title">Faculty Evaluation</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/FacultyEvaluation">Faculty Evaluation</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a href="/Home/ApplyConvocationStudent"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-user-graduate"></i>  <strong class="title">Convocation Application</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/ApplyConvocationStudent">Convocation Application</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/Home/UploadDocumentbyStudent"><i style="font-size:25px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-file-upload"></i>  <strong class="title">Upload Document</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/UploadDocumentbyStudent">Upload Document</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/Home/DisciplinaryCode"><i style="font-size:18px;margin-top:5px;padding-right: 6px;margin-left: -4px;" class="fas fa-chalkboard"></i>  <strong class="title" style="font-size:13px">Disciplinary Code &amp; Others</strong> <span class="arrow"></span></a>
+                        <div class="subNav">
+                            <ul>
+                                <li><a href="/Home/DisciplinaryCode">Disciplinary Code &amp; Others</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
+
+                </ul>
+            </nav>
+        </div>
+        <!--// end side nav bar -->
+
+        <div class="container-fluid body-container left">
+            <div class="common-container">
+                <div class="row breadcumb">
+                    <div class="col-lg-12">
+
+                        
+    <a href="/Home/Index">Home</a> / <span>Offered Courses</span>
+
+                    </div>
+                </div>
+                <div class="row body-content">
+                    <div class="rowIn page-title">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            <h3>
+    Offered Courses
+</h3>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+
+                        
+
+<link href="/Assets/css/custom.css" rel="stylesheet" />
+
+
+<script type="text/javascript">
+    function printDiv() {
+
+
+        var $first = $('table').find('tr').find('td:nth-child(7)');
+        $first.hide();
+        var content = document.getElementById('divPrint').innerHTML;
+        var mywindow = window.open('', 'Print', 'height=600,width=800');
+
+        mywindow.document.write('<html><head><title>Print</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(content);
+        mywindow.document.write('</body></html>');
+
+
+        mywindow.document.close();
+        mywindow.focus()
+        mywindow.print();
+        mywindow.close();
+        $first.show();
+        return true;
+    }
+
+
+</script>
+
+
+<div ng-controller="OfferedCoursesStudentController">
+    <div id="adminBaseUrl" style="display:none">https://faportal.ewubd.edu</div>
+    <div data-ng-show="successMessage.length || errorMessage.length">
+        <ng-include src="'/AngularTemplates/GlobalNotification/CustomMessageTemplate.html'" />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Department </label>
+                <div class="col-sm-8">
+
+                    <select class="form-control"
+                            data-ng-model="filterDepartmentId">
+                        <option selected="selected" value="">Please select</option>
+                        <option ng-repeat="item in AcademicDepartmentList" value="{{item.AcademicDepartmentId}}">{{item.AcademicDepartmentName}}</option>
+                    </select>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Semester </label>
+                <div class="col-sm-8">
+                    <select class="form-control" data-ng-model="filterSemesterId">
+                        <option selected="selected" value="">Please select</option>
+                        <option ng-repeat="item in SemisterList" value="{{item.SemesterId}}">{{item.SemesterName}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <a href="" class="btn btn-primary" ng-click="search()"><span class="fa fa-eye"></span> Show Offered Courses</a>
+            <a href="" class="btn btn-primary" onclick="printDiv()"><span class="fa fa-print"></span> Print</a>
+        </div>
+
+    </div>
+    <br/> <br />
+
+    <div style="height:330px;overflow-y:scroll;text-align:left" id="courseTable" class="table-responsive">
+
+        <div id="divPrint" style="width:76% !important;margin:0px auto !important;border:1px solid #808080 !important">
+            <table id="tblData" border="1" class="table table-striped grid-table" infinite-scroll-disabled='courseList.busy' infinite-scroll-distance='0' infinite-scroll-parent>
+
+                <tr>
+                    <th>
+                        Course
+
+                    </th>
+                    <td><b>Section</b></td>
+                    
+                    <td><b>Timing</b></td>
+                    <td><b>Room No</b></td>
+                    <td><b>Dedicated department</b></td>
+                    <td><b>Capacity</b></td>
+                    
+                </tr>
+
+                <tr ng-repeat="c in OfferedCourseList">
+                    <td>{{c.CourseCode}}</td>
+                    <td>{{c.SectionName}}</td>
+                    
+                    <td>{{c.TimeSlotName}}</td>
+                    <td>{{c.RoomCode}}</td>
+                    <td>{{c.DedicateDepartmentName}}</td>
+                    <td ng-show="c.CourseCode.indexOf('Lab') == -1" class="{{c.Color}}"> {{c.SeatTaken}} / {{c.SeatCapacity}}</td>
+                    
+                </tr>
+
+            </table>
+            <a ng-show="courseList.items.length" href="" ng-click="loadMore()">&nbsp;Load More Courses</a>
+        </div>
+
+    </div>
+
+
+
+    <div id="editRoutineModal" class="modal fade bs-example-modal-panel" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:110%;left:-5%">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 class="panel-title">Edit Routine</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <b>Course</b>
+                            </div>
+                            <div class="col-md-6">
+                                {{selectedCourse.CourseCode}}, Section {{selectedCourse.SectionName}}
+                            </div>
+                        </div> <br />
+                        <div class="row">
+                            <div class="col-md-3">
+                                <b>Room</b>
+                            </div>
+                            <div class="col-md-6">
+                                {{selectedCourse.RoomName}}
+                            </div>
+                        </div> <br />
+                        <div class="row" ng-show="selectedCourse.RoutineDays.length && selectedCourse.SlotStartTime.length">
+                            <div class="col-md-6">
+                                <b>Class Timing</b>
+                            </div>
+                            <div class="col-md-6">
+                                {{selectedCourse.TimeSlotName}}
+                            </div>
+                        </div> <br />
+                        <div class="row">
+                            <div class="col-md-3">
+                                Current Faculty
+                            </div>
+                            <div class="col-md-3">
+                                {{selectedCourse.ShortName}}
+                            </div>
+                            
+
+
+                        </div> <br />
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                Current Seats Taken
+                            </div>
+                            <div class="col-md-3">
+                                {{selectedCourse.SeatTaken}}
+                            </div>
+                            <div class="col-md-3">
+                                New Seat Capacity
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="selectedCourse.SeatCapacity" />
+                            </div>
+
+                            <div ng-show="canShowRequestedBy">
+                                <div class="col-md-3">
+                                    Requested By
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" ng-model="selectedCourse.RequestedBy" />
+                                </div>
+                            </div>
+
+                        </div> <br />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span style="font-size:1.1em;color:red;font-weight:bold">{{selectedCourse.errors}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center">
+                                <a href="" ng-click="saveEdits()" class="btn btn-primary"><span class="fa fa-check"></span> Update</a>
+                                <a href="" ng-click="cancelEdits()" class="btn btn-danger"><span class="fa fa-trash-o"></span> Cancel</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// end body -->
+        <!-- begin footer -->
+        <!--<footer class="row footer">
+            <div class="powered-by">
+                <span>Powered by:</span>
+                <figure>
+                    <img src="/alternatestyles/images/footer-logo.png" alt="">
+                </figure>
+            </div>
+        </footer>-->
+        <!--// End footer -->
+    </div>
+    <!--// End main-wrapper -->
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Are you sure you want to delete</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default customBtn redBg w100" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default customBtn blueBg w80" data-dismiss="modal">Okay</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="blackout" runat="server" class="blackout"></div>
+
+    <div ng-show="loading" id="myloadingdiv" class="ng-hide">
+        <div class="ajax-loader-pre">
+
+            <img src="/Assets/img/loading-img.gif" class="ajax-loader">
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/Assets/plugins/jquery/jquery.min.js"></script>
+    <script src="/Assets/plugins/jquery/jquery-ui.min.js"></script>
+    <script src="/Assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="/Assets/plugins/parsley/parsley.min.js"></script>
+
+
+
+    <script src="/Assets/js/ValidationHelper.js"></script>
+    <script src="/Assets/plugins/alternate/bundlealt.js"></script>
+    <script src="/Assets/plugins/angularjs/angular.1.7.5.min.js"></script>
+
+    <script src="/Assets/plugins/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="/Assets/plugins/ng-file-upload/ng-file-upload.min.js"></script>
+    <script src="/Assets/js/angularModule.js"></script>
+
+    <script src="/Assets/plugins/bootbox.min.js"></script>
+    <script src="/Assets/plugins/summernote/summernote.min.js"></script>
+    <script src="/Assets/plugins/summernote/angular-summernote.min.js"></script>
+    <script src="/Assets/js/main-bundle-supp2.js"></script>
+
+    
+    <script src="/Assets/js/authInterceptor.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".navbar-expand-toggle").click(function () {
+                $(".body-container, .container-fluid").toggleClass("left");
+            });
+            $(".body-container, .container-fluid").click(function () {
+                $(".body-container, .container-fluid").removeClass("left");
+            });
+
+
+        });
+    </script>
+
+    
+
+    <script src="/Assets/js/AngularJs/OfferedCoursesStudentController.js"></script>
+
+
+
+</body>
+
+
+</html>

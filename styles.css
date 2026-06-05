@@ -1,0 +1,902 @@
+/* =============================================================
+   EWU Portal Helper v2.5.0
+   Content Script Styles
+   ============================================================= */
+
+:root {
+  --ewu-bg-primary:       rgba(15, 15, 25, 0.85);
+  --ewu-bg-secondary:     rgba(25, 25, 45, 0.75);
+  --ewu-bg-card:          rgba(30, 30, 55, 0.65);
+  --ewu-bg-hover:         rgba(45, 45, 80, 0.70);
+  --ewu-bg-input:         rgba(20, 20, 40, 0.80);
+  --ewu-glass-blur:       16px;
+  --ewu-glass-blur-heavy: 24px;
+  --ewu-border-glass:     1px solid rgba(255, 255, 255, 0.08);
+  --ewu-border-glow:      1px solid rgba(100, 140, 255, 0.25);
+  --ewu-border-radius:    12px;
+  --ewu-border-radius-sm: 8px;
+  --ewu-border-radius-lg: 16px;
+  --ewu-accent:           #6C8EFF;
+  --ewu-accent-hover:     #8AA4FF;
+  --ewu-accent-dim:       rgba(108, 142, 255, 0.15);
+  --ewu-success:          #4ADE80;
+  --ewu-success-dim:      rgba(74, 222, 128, 0.15);
+  --ewu-warning:          #FBBF24;
+  --ewu-warning-dim:      rgba(251, 191, 36, 0.15);
+  --ewu-danger:           #F87171;
+  --ewu-danger-dim:       rgba(248, 113, 113, 0.15);
+  --ewu-info:             #60A5FA;
+  --ewu-info-dim:         rgba(96, 165, 250, 0.15);
+  --ewu-text-primary:     rgba(255, 255, 255, 0.92);
+  --ewu-text-secondary:   rgba(255, 255, 255, 0.55);
+  --ewu-text-muted:       rgba(255, 255, 255, 0.30);
+  --ewu-font-family:      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --ewu-font-size-xs:     11px;
+  --ewu-font-size-sm:     12px;
+  --ewu-font-size-md:     13px;
+  --ewu-font-size-lg:     15px;
+  --ewu-font-size-xl:     18px;
+  --ewu-shadow-sm:        0 2px 8px rgba(0, 0, 0, 0.30);
+  --ewu-shadow-md:        0 4px 16px rgba(0, 0, 0, 0.40);
+  --ewu-shadow-lg:        0 8px 32px rgba(0, 0, 0, 0.50);
+  --ewu-shadow-glow:      0 0 20px rgba(108, 142, 255, 0.20);
+  --ewu-transition-fast:  0.15s ease;
+  --ewu-transition-md:    0.25s ease;
+  --ewu-transition-slow:  0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --ewu-z-toast:          2147483650;
+  --ewu-z-modal:          2147483640;
+}
+
+body.ewu-no-animations *,
+body.ewu-no-animations *::before,
+body.ewu-no-animations *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+
+/* =============================================================
+   TOAST NOTIFICATIONS
+   ============================================================= */
+
+#ewu-toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: var(--ewu-z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  max-width: 300px;
+  width: auto;
+}
+
+.ewu-toast-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  overflow: hidden;
+  min-height: 0;
+  background: rgba(127, 127, 127, 0.27);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3.3px);
+  -webkit-backdrop-filter: blur(3.3px);
+  border: 1px solid rgba(127, 127, 127, 1);
+  font-family: var(--ewu-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.15px;
+  line-height: 1.3;
+  white-space: normal;
+  word-break: break-word;
+  cursor: default;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateX(120%) scale(0.95);
+  transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.3s ease;
+}
+
+.ewu-toast-item::before {
+  content: none;
+}
+
+.ewu-toast-item.ewu-toast-visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.ewu-toast-item.ewu-toast-exit {
+  opacity: 0;
+  transform: translateX(120%) scale(0.95);
+}
+
+.ewu-toast-item.ewu-toast-success {
+  background: rgba(52, 211, 153, 0.22);
+  box-shadow: 0 4px 30px rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.85);
+}
+
+.ewu-toast-item.ewu-toast-error {
+  background: rgba(248, 113, 113, 0.22);
+  box-shadow: 0 4px 30px rgba(248, 113, 113, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.85);
+}
+
+.ewu-toast-item.ewu-toast-warning {
+  background: rgba(251, 191, 36, 0.22);
+  box-shadow: 0 4px 30px rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.85);
+}
+
+.ewu-toast-item.ewu-toast-info {
+  background: rgba(127, 127, 127, 0.27);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(127, 127, 127, 1);
+}
+
+.ewu-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  line-height: 1;
+}
+
+.ewu-toast-success .ewu-toast-icon { color: #059669; filter: drop-shadow(0 0 4px rgba(52, 211, 153, 0.5)); }
+.ewu-toast-error   .ewu-toast-icon { color: #dc2626; filter: drop-shadow(0 0 4px rgba(248, 113, 113, 0.5)); }
+.ewu-toast-warning .ewu-toast-icon { color: #d97706; filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.5)); }
+.ewu-toast-info    .ewu-toast-icon { color: #4b5563; filter: drop-shadow(0 0 4px rgba(127, 127, 127, 0.4)); }
+
+.ewu-toast-icon svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2.2px;
+}
+
+.ewu-toast-text {
+  color: #ffffff;
+  font-weight: 500;
+  line-height: 1.4;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =============================================================
+   LOGIN HELPER
+   ============================================================= */
+
+#lblcaptchaAnswer.ewu-lh-filled {
+  outline: none !important;
+  box-shadow: 0 0 0 2px var(--ewu-success), 0 0 12px rgba(74, 222, 128, 0.25) !important;
+  border-color: var(--ewu-success) !important;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+
+/* =============================================================
+   ROUTINE GENERATOR - Generate Button
+   ============================================================= */
+
+#ewu-rg-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+  padding: 4px 0;
+}
+
+#ewu-rg-btn-wrapper-inline {
+  display: inline-block;
+  margin: 0 0 0 8px;
+  vertical-align: middle;
+}
+
+#ewu-rg-btn-generate {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--ewu-font-family);
+  color: #FFFFFF;
+  background-color: #1A73E8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(26, 115, 232, 0.18);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+#ewu-rg-btn-generate:active {
+  transform: scale(0.96);
+  box-shadow: 0 1px 4px rgba(26, 115, 232, 0.20);
+}
+
+#ewu-rg-btn-generate:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: #94A3B8;
+  background-color: #F1F5F9;
+  box-shadow: none;
+  transform: none;
+}
+
+#ewu-rg-btn-generate.ewu-rg-btn-ready {
+  animation: ewu-btn-ready-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes ewu-btn-ready-glow {
+  0%, 100% { box-shadow: 0 1px 6px rgba(26, 115, 232, 0.18); }
+  50%      { box-shadow: 0 2px 14px rgba(26, 115, 232, 0.35); }
+}
+
+#ewu-rg-btn-generate::before,
+#ewu-rg-btn-generate::after {
+  position: absolute;
+  content: "";
+  width: 150%;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1;
+  background-repeat: no-repeat;
+}
+
+#ewu-rg-btn-generate:hover::before {
+  top: -70%;
+  background-image: radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, #1A73E8 20%, transparent 30%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #1A73E8 15%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+  background-position: 50% 120%;
+  animation: ewu-topBubbles 0.6s ease;
+}
+
+@keyframes ewu-topBubbles {
+  0% {
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+  }
+  50% {
+    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
+  }
+  100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+#ewu-rg-btn-generate:hover::after {
+  bottom: -70%;
+  background-image: radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #1A73E8 15%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%),
+    radial-gradient(circle, #1A73E8 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+  background-position: 50% 0%;
+  animation: ewu-bottomBubbles 0.6s ease;
+}
+
+@keyframes ewu-bottomBubbles {
+  0% {
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+  }
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
+  }
+  100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+
+/* =============================================================
+   ROUTINE GENERATOR - Preview Modal
+   ============================================================= */
+
+.ewu-rg-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ewu-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.ewu-rg-modal.ewu-rg-modal-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ewu-rg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.ewu-rg-content {
+  position: relative;
+  width: 94vw;
+  max-width: 860px;
+  max-height: 90vh;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.40);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ewu-rg-modal.ewu-rg-modal-open .ewu-rg-content {
+  transform: scale(1) translateY(0);
+}
+
+.ewu-rg-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #F8FAFC;
+  border-bottom: 1px solid #E2E8F0;
+  flex-shrink: 0;
+}
+
+.ewu-rg-toolbar-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1E293B;
+}
+
+.ewu-rg-toolbar-actions { display: flex; gap: 8px; }
+
+.ewu-rg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--ewu-font-family);
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.ewu-rg-btn:hover       { background: #F1F5F9; border-color: #CBD5E1; color: #1E293B; }
+.ewu-rg-btn svg         { flex-shrink: 0; }
+.ewu-rg-btn-pdf:hover   { border-color: #93C5FD; color: #1A73E8; background: #EFF6FF; }
+.ewu-rg-btn-img:hover   { border-color: #86EFAC; color: #16A34A; background: #F0FDF4; }
+
+.ewu-rg-btn-close {
+  padding: 7px 10px;
+  font-size: 18px;
+  line-height: 1;
+  color: #94A3B8;
+  border-color: transparent;
+  background: transparent;
+}
+
+.ewu-rg-btn-close:hover { color: #EF4444; background: #FEF2F2; border-color: transparent; }
+
+.ewu-rg-body {
+  flex: 1;
+  overflow: auto;
+  padding: 20px 24px 24px;
+  background: #FFFFFF;
+}
+
+.ewu-rg-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.ewu-rg-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #E2E8F0;
+  border-top-color: #1A73E8;
+  border-radius: 50%;
+  animation: ewu-spin 0.7s linear infinite;
+}
+
+@keyframes ewu-spin { to { transform: rotate(360deg); } }
+
+.ewu-rt-container {
+  display: inline-block;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.ewu-rt-table {
+  width: 100%;
+  table-layout: auto;
+}
+
+.ewu-rt-table th,
+.ewu-rt-table td { page-break-inside: avoid; }
+
+.ewu-rt-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748B;
+  font-size: 15px;
+}
+
+
+/* =============================================================
+   OFFERED COURSES - Controls Bar
+   ============================================================= */
+
+#ewu-oc-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0 14px;
+  padding: 10px 14px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ewu-oc-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.ewu-oc-stats {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--ewu-font-family);
+  color: #1A73E8;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+  background: #EFF6FF;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #BFDBFE;
+  box-shadow: 0 1px 6px rgba(26, 115, 232, 0.12);
+}
+
+.ewu-oc-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ewu-oc-toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.ewu-oc-toggle-track {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+  background: #CBD5E1;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.ewu-oc-toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.ewu-oc-toggle-input:checked + .ewu-oc-toggle-track { background: #1A73E8; }
+.ewu-oc-toggle-input:checked + .ewu-oc-toggle-track::after { transform: translateX(18px); }
+.ewu-oc-toggle-input:focus-visible + .ewu-oc-toggle-track { box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.25); }
+
+.ewu-oc-toggle-text {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--ewu-font-family);
+  color: #475569;
+  white-space: nowrap;
+}
+
+.ewu-oc-toggle-input:checked ~ .ewu-oc-toggle-text { color: #1A73E8; }
+
+
+/* =============================================================
+   OFFERED COURSES - Search Box
+   ============================================================= */
+
+.ewu-oc-search-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 420px;
+  min-width: 200px;
+}
+
+.ewu-oc-search-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #334155;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: var(--ewu-font-family);
+  padding-left: 1px;
+  margin-bottom: 4px;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ewu-oc-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  z-index: 1;
+}
+
+.ewu-oc-search-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.ewu-oc-search-input {
+  width: 100%;
+  padding: 9px 34px;
+  font-size: 13px;
+  font-family: var(--ewu-font-family);
+  color: #1E293B;
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.ewu-oc-search-input::placeholder { color: #94A3B8; }
+.ewu-oc-search-input:focus { border-color: #1A73E8; box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15); }
+
+.ewu-oc-search-clear {
+  position: absolute;
+  right: 5px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #E2E8F0;
+  color: #64748B;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  padding: 0;
+}
+
+.ewu-oc-search-clear:hover { background: #CBD5E1; color: #334155; }
+
+
+/* =============================================================
+   OFFERED COURSES - PDF Export Button
+   ============================================================= */
+
+.ewu-oc-export-pdf-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 34px;
+  padding: 0 !important;
+  background: #FFFFFF !important;
+  color: #DC2626 !important;
+  border: 1.5px solid #DC2626 !important;
+  border-radius: 8px !important;
+  font-size: 15px !important;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease !important;
+  box-shadow: 0 1px 4px rgba(220, 38, 38, 0.15) !important;
+  vertical-align: middle;
+}
+
+.ewu-oc-export-pdf-btn:hover {
+  background: #DC2626 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.30) !important;
+  transform: translateY(-1px);
+}
+
+.ewu-oc-export-pdf-btn:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.20) !important;
+}
+
+.ewu-oc-export-pdf-btn .fa-file-pdf { pointer-events: none; }
+
+
+/* =============================================================
+   OFFERED COURSES - Table Scroll Container
+   ============================================================= */
+
+#courseTable {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 280px);
+  min-height: 300px;
+  position: relative;
+}
+
+
+/* =============================================================
+   OFFERED COURSES - Enhanced Table
+   ============================================================= */
+
+#divPrint {
+  min-width: fit-content;
+}
+
+.ewu-oc-table {
+  border-collapse: collapse !important;
+  width: max-content;
+  min-width: 100%;
+  font-size: 13px;
+  font-family: var(--ewu-font-family);
+  border: 1px solid #CBD5E1 !important;
+  animation: ewu-fade-in-up 0.3s ease;
+}
+
+.ewu-oc-table thead { position: relative; }
+
+.ewu-oc-th {
+  background: #1A73E8 !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-align: center !important;
+  padding: 10px 12px !important;
+  border: 1px solid #1565C0 !important;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+}
+
+.ewu-oc-th:first-child { text-align: left !important; }
+
+.ewu-oc-sticky-header {
+  position: sticky !important;
+  top: 0;
+  z-index: 5;
+}
+
+.ewu-oc-row { transition: background-color 0.1s ease; }
+.ewu-oc-row:hover { background-color: #EFF6FF !important; }
+.ewu-oc-row-even { background-color: #FFFFFF; }
+.ewu-oc-row-odd  { background-color: #F8FAFC; }
+
+.ewu-oc-td {
+  padding: 8px 12px !important;
+  border: 1px solid #E2E8F0 !important;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.ewu-oc-td-course   { font-weight: 600 !important; text-align: left !important; color: #1E293B !important; white-space: nowrap; font-size: 12px !important; letter-spacing: 0.2px; }
+.ewu-oc-td-section  { font-weight: 500 !important; white-space: nowrap; }
+.ewu-oc-td-faculty  { font-weight: 600 !important; color: #1f2937 !important; white-space: nowrap; }
+.ewu-oc-td-seats    { font-weight: 600 !important; white-space: nowrap; color: #374151 !important; font-size: 12px !important; }
+.ewu-oc-td-days     { white-space: nowrap; font-size: 12px !important; color: #1A73E8 !important; font-weight: 500 !important; }
+.ewu-oc-td-time     { white-space: nowrap; font-size: 12px !important; color: #475569 !important; }
+.ewu-oc-td-room     { white-space: nowrap; font-size: 12px !important; }
+.ewu-oc-td-dept     { white-space: nowrap; font-size: 12px !important; color: #475569 !important; }
+
+/* Legacy classes — kept for DOM-fallback compatibility */
+.ewu-oc-td-capacity { font-weight: 500 !important; white-space: nowrap; }
+.ewu-oc-td-timing   { white-space: nowrap; font-size: 12px !important; color: #475569 !important; }
+
+.ewu-oc-left         { font-weight: 700 !important; white-space: nowrap; border-radius: 0 !important; transition: color 0.15s ease, background-color 0.15s ease; }
+.ewu-oc-left-green   { color: #15803D !important; background-color: #F0FDF4 !important; }
+.ewu-oc-left-yellow  { color: #B45309 !important; background-color: #FFFBEB !important; }
+.ewu-oc-left-red     { color: #DC2626 !important; background-color: #FEF2F2 !important; }
+
+
+/* =============================================================
+   SCROLLBAR
+   ============================================================= */
+
+.ewu-rg-body::-webkit-scrollbar,
+#courseTable::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.ewu-rg-body::-webkit-scrollbar-track,
+#courseTable::-webkit-scrollbar-track { background: #F1F5F9; }
+
+.ewu-rg-body::-webkit-scrollbar-thumb,
+#courseTable::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+
+.ewu-rg-body::-webkit-scrollbar-thumb:hover,
+#courseTable::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+
+/* =============================================================
+   KEYFRAMES
+   ============================================================= */
+
+@keyframes ewu-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+@keyframes ewu-fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* =============================================================
+   RESPONSIVE
+   ============================================================= */
+
+@media (max-width: 480px) {
+  .ewu-oc-export-pdf-btn {
+    width: 32px;
+    height: 30px;
+    font-size: 13px !important;
+  }
+
+  #ewu-toast-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    min-width: 0;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .ewu-toast-item {
+    max-width: 92vw;
+    font-size: 11.5px;
+    padding: 7px 11px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+
+  .ewu-rg-content { width: 99vw; max-height: 94vh; border-radius: 12px; }
+  .ewu-rg-body    { padding: 14px; }
+  .ewu-rg-toolbar { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
+  .ewu-rg-toolbar-title { font-size: 14px; }
+  .ewu-rg-btn     { padding: 6px 10px; font-size: 11px; }
+
+  #ewu-rg-btn-generate { padding: 8px 16px; font-size: 12px; }
+  #ewu-rg-btn-wrapper  { justify-content: center; }
+  #ewu-rg-btn-row      { flex-wrap: wrap; gap: 6px; }
+
+  #ewu-oc-controls        { flex-direction: column; align-items: stretch; gap: 8px; }
+  .ewu-oc-controls-right  { justify-content: space-between; gap: 12px; }
+  .ewu-oc-search-group    { max-width: 100%; min-width: 0; }
+  .ewu-oc-search-input    { font-size: 12px; padding: 8px 30px; }
+  .ewu-oc-table           { font-size: 11px; }
+  .ewu-oc-th              { padding: 7px 8px !important; font-size: 10px !important; }
+  .ewu-oc-td              { padding: 6px 8px !important; font-size: 11px !important; }
+  .ewu-oc-stats           { font-size: 12px; }
+
+  #courseTable {
+    max-height: calc(100vh - 240px);
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ewu-rg-content  { width: 97vw; }
+  .ewu-oc-table    { font-size: 12px; }
+  #ewu-rg-btn-wrapper { justify-content: flex-end; }
+
+  #courseTable {
+    max-height: calc(100vh - 260px);
+    min-height: 260px;
+  }
+}
+
+@media (min-width: 769px) {
+  #ewu-rg-btn-wrapper { justify-content: flex-end; }
+}
+
+
+/* =============================================================
+   ACCESSIBILITY
+   ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ewu-rg-content,
+  .ewu-rg-modal,
+  .ewu-oc-table,
+  .ewu-oc-row,
+  .ewu-toast-item {
+    transition: none !important;
+  }
+
+  #ewu-rg-btn-generate.ewu-rg-btn-ready { animation: none !important; }
+  .ewu-rg-spinner { animation-duration: 2s !important; }
+}
