@@ -1,0 +1,24 @@
+name: Create Release Zip
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create Zip Archive
+        uses: thedoctor0/zip-release@main
+        with:
+          type: 'zip'
+          filename: 'ewu-buddy-extension.zip'
+          exclusions: '*.git* .github/* node_modules/*'
+      
+      - name: Upload to Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "ewu-buddy-extension.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
