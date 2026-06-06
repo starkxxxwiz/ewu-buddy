@@ -4,6 +4,10 @@ on:
   release:
     types: [created]
 
+permissions:
+  contents: write  # This allows creating releases
+  actions: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,3 +26,4 @@ jobs:
         with:
           artifacts: "ewu-buddy-extension.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true  # Add this line
