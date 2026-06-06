@@ -1,0 +1,484 @@
+/* =============================================================
+   EWU Portal Helper — Premium Dark Mode Stylesheet
+   ============================================================= */
+
+:root {
+  --portal-dark-bg-body:       #0A0A16;
+  --portal-dark-bg-card:       rgba(255, 255, 255, 0.04);
+  --portal-dark-bg-card-hover: rgba(255, 255, 255, 0.08);
+  --portal-dark-bg-panel:      #121226;
+  --portal-dark-bg-nav:        rgba(13, 13, 33, 0.85);
+  --portal-dark-bg-sidebar:    #0D0D1F;
+  --portal-dark-bg-input:      rgba(255, 255, 255, 0.06);
+  --portal-dark-border:        rgba(255, 255, 255, 0.08);
+  --portal-dark-border-hover:  rgba(108, 142, 255, 0.35);
+  --portal-dark-accent:        #6C8EFF;
+  --portal-dark-accent-hover:  #8AA4FF;
+  --portal-dark-text-primary:  rgba(255, 255, 255, 0.92);
+  --portal-dark-text-secondary:rgba(255, 255, 255, 0.55);
+  --portal-dark-text-muted:    rgba(255, 255, 255, 0.30);
+  --portal-dark-shadow:        0 8px 32px rgba(0, 0, 0, 0.5);
+  --portal-dark-blur:          16px;
+  --portal-dark-success:       #4ADE80;
+  --portal-dark-danger:        #F87171;
+  --portal-dark-info:          #60A5FA;
+}
+
+/* Global Transition Enablement for Smooth Fading */
+body, 
+.main-wrapper,
+.navbar,
+.sidebar-inverse,
+.body-container,
+.common-container,
+.common-container *,
+.table,
+.table td,
+.table th,
+.alert,
+input,
+select,
+textarea,
+button {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* --- Base Body & Layout Background --- */
+body {
+  background-color: var(--portal-dark-bg-body) !important;
+  color: var(--portal-dark-text-primary) !important;
+}
+
+.main-wrapper {
+  background-color: var(--portal-dark-bg-body) !important;
+}
+
+.body-container {
+  background-color: var(--portal-dark-bg-body) !important;
+}
+
+/* --- Breadcrumbs & Titles --- */
+.row.breadcumb, .breadcumb {
+  background-color: var(--portal-dark-bg-panel) !important;
+  border-color: var(--portal-dark-border) !important;
+  color: var(--portal-dark-text-secondary) !important;
+}
+
+.row.breadcumb *, .breadcumb * {
+  background-color: transparent !important;
+}
+
+.row.breadcumb a, .breadcumb a {
+  color: var(--portal-dark-accent) !important;
+}
+
+.row.breadcumb span, .breadcumb span {
+  color: var(--portal-dark-text-secondary) !important;
+}
+
+.page-title {
+  background-color: var(--portal-dark-bg-panel) !important;
+}
+
+.page-title * {
+  background-color: transparent !important;
+}
+
+h1, h2, h3, h4, h5, h6, .page-title h3 {
+  color: var(--portal-dark-text-primary) !important;
+}
+
+/* --- Top Navigation Bar (Glassmorphism) --- */
+.navbar-top {
+  background: var(--portal-dark-bg-nav) !important;
+  backdrop-filter: blur(var(--portal-dark-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--portal-dark-blur)) !important;
+  border-bottom: 1px solid var(--portal-dark-border) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+.navbar-brand img {
+  filter: drop-shadow(0 0 8px rgba(108, 142, 255, 0.4));
+}
+
+.nav-user {
+  color: var(--portal-dark-text-primary) !important;
+}
+
+.nav-user span {
+  color: var(--portal-dark-text-primary) !important;
+  font-weight: 500;
+}
+
+/* Profile Dropdown Content styling */
+.dropdown-content {
+  background-color: var(--portal-dark-bg-sidebar) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+  box-shadow: var(--portal-dark-shadow) !important;
+  border-radius: 8px;
+}
+
+.dropdown-content a {
+  color: var(--portal-dark-text-primary) !important;
+  border-bottom: 1px solid var(--portal-dark-border) !important;
+}
+
+.dropdown-content a:hover {
+  background-color: var(--portal-dark-bg-card-hover) !important;
+  color: var(--portal-dark-accent) !important;
+}
+
+.dropdown-content .glyphicon-triangle-top {
+  color: var(--portal-dark-bg-sidebar) !important;
+}
+
+/* --- Sidebar Navigation Panel --- */
+.sidebar-inverse.side-navbar {
+  background-color: var(--portal-dark-bg-sidebar) !important;
+  border-right: 1px solid var(--portal-dark-border) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.sidebar-inverse .nav > li > a {
+  color: var(--portal-dark-text-secondary) !important;
+  border-bottom: 1px solid var(--portal-dark-border) !important;
+}
+
+.sidebar-inverse .nav > li > a:hover,
+.sidebar-inverse .nav > li > a:focus,
+.sidebar-inverse .nav > li.active > a {
+  background-color: var(--portal-dark-bg-card-hover) !important;
+  color: var(--portal-dark-accent) !important;
+}
+
+.sidebar-inverse .nav > li > a i {
+  color: var(--portal-dark-accent) !important;
+}
+
+/* Submenu / SubNav inside Sidebar */
+.sidebar-inverse .subNav {
+  background-color: #090915 !important;
+  border-left: 3px solid var(--portal-dark-accent) !important;
+}
+
+.sidebar-inverse .subNav ul li a {
+  color: var(--portal-dark-text-secondary) !important;
+}
+
+.sidebar-inverse .subNav ul li a:hover {
+  color: var(--portal-dark-accent) !important;
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Expand toggle button */
+.navbar-expand-toggle {
+  color: var(--portal-dark-text-primary) !important;
+  background-color: transparent !important;
+}
+
+.navbar-expand-toggle:hover {
+  background-color: var(--portal-dark-bg-card-hover) !important;
+}
+
+/* --- Panels and Cards --- */
+.common-container, .panel, .well, .card {
+  background-color: var(--portal-dark-bg-panel) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* --- Tables Styling (Premium spreadsheet styling in Dark Mode) --- */
+.table, .table-striped, .table-bordered {
+  background-color: var(--portal-dark-bg-panel) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+}
+
+.table > thead > tr > th {
+  background-color: #171730 !important;
+  color: var(--portal-dark-text-primary) !important;
+  border-bottom: 2px solid var(--portal-dark-border) !important;
+  border-top: 1px solid var(--portal-dark-border) !important;
+}
+
+.table > tbody > tr > td {
+  border-top: 1px solid var(--portal-dark-border) !important;
+  color: var(--portal-dark-text-secondary) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.015) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: var(--portal-dark-bg-card-hover) !important;
+  color: var(--portal-dark-text-primary) !important;
+}
+
+/* --- Form Fields & Inputs --- */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  background-color: var(--portal-dark-bg-input) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+  color: var(--portal-dark-text-primary) !important;
+  border-radius: 6px !important;
+}
+
+select option {
+  background-color: var(--portal-dark-bg-panel) !important;
+  color: var(--portal-dark-text-primary) !important;
+}
+
+/* Fix for standard select dropdown options */
+option {
+  background-color: var(--portal-dark-bg-panel) !important;
+  color: var(--portal-dark-text-primary) !important;
+}
+
+.dropdown-menu, .dropdown-content {
+  background-color: var(--portal-dark-bg-sidebar) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+  box-shadow: var(--portal-dark-shadow) !important;
+}
+
+.dropdown-menu > li > a, .dropdown-content a {
+  color: var(--portal-dark-text-primary) !important;
+  background-color: transparent !important;
+}
+
+.dropdown-menu > li > a:hover, 
+.dropdown-menu > li > a:focus, 
+.dropdown-content a:hover {
+  background-color: var(--portal-dark-bg-card-hover) !important;
+  color: var(--portal-dark-accent) !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--portal-dark-accent) !important;
+  box-shadow: 0 0 0 3px rgba(108, 142, 255, 0.2) !important;
+  outline: none !important;
+}
+
+/* --- Button Overrides --- */
+.btn-default {
+  background-color: var(--portal-dark-bg-card) !important;
+  color: var(--portal-dark-text-primary) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+}
+
+.btn-default:hover, .btn-default:focus {
+  background-color: var(--portal-dark-bg-card-hover) !important;
+  border-color: var(--portal-dark-border-hover) !important;
+  color: var(--portal-dark-accent) !important;
+}
+
+.btn-primary {
+  background-color: #1A73E8 !important;
+  border-color: #1A73E8 !important;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9 !important;
+  border-color: #2980b9 !important;
+}
+
+/* --- Alerts & Notifications --- */
+.alert-info {
+  background-color: rgba(96, 165, 250, 0.1) !important;
+  border: 1px solid rgba(96, 165, 250, 0.2) !important;
+  color: #93C5FD !important;
+}
+
+.alert-success {
+  background-color: rgba(74, 222, 128, 0.1) !important;
+  border: 1px solid rgba(74, 222, 128, 0.2) !important;
+  color: #A7F3D0 !important;
+}
+
+.alert-danger {
+  background-color: rgba(248, 113, 113, 0.1) !important;
+  border: 1px solid rgba(248, 113, 113, 0.2) !important;
+  color: #FCA5A5 !important;
+}
+
+/* --- Enhanced Courses Sub-elements --- */
+#ewu-oc-controls {
+  background: var(--portal-dark-bg-sidebar) !important;
+  border-color: var(--portal-dark-border) !important;
+}
+
+.ewu-oc-stats {
+  background: rgba(108, 142, 255, 0.08) !important;
+  border-color: rgba(108, 142, 255, 0.2) !important;
+  color: var(--portal-dark-accent) !important;
+}
+
+.ewu-oc-search-input {
+  background: var(--portal-dark-bg-input) !important;
+  border-color: var(--portal-dark-border) !important;
+  color: var(--portal-dark-text-primary) !important;
+}
+
+.ewu-oc-search-input:focus {
+  border-color: var(--portal-dark-accent) !important;
+}
+
+.ewu-oc-toggle-text {
+  color: var(--portal-dark-text-secondary) !important;
+}
+
+.ewu-oc-table {
+  border-color: var(--portal-dark-border) !important;
+}
+
+.ewu-oc-th {
+  background: #171730 !important;
+  border-color: var(--portal-dark-border) !important;
+}
+
+.ewu-oc-td {
+  border-color: var(--portal-dark-border) !important;
+  color: var(--portal-dark-text-secondary) !important;
+}
+
+.ewu-oc-td-course {
+  color: var(--portal-dark-text-primary) !important;
+}
+
+.ewu-oc-row:hover {
+  background-color: var(--portal-dark-bg-card-hover) !important;
+}
+
+/* Modifying custom left seat tags for readability in Dark mode */
+.ewu-oc-left-green {
+  color: #4ADE80 !important;
+  background-color: rgba(74, 222, 128, 0.08) !important;
+}
+
+.ewu-oc-left-yellow {
+  color: #FBBF24 !important;
+  background-color: rgba(251, 191, 36, 0.08) !important;
+}
+
+.ewu-oc-left-red {
+  color: #F87171 !important;
+  background-color: rgba(248, 113, 113, 0.08) !important;
+}
+
+.ewu-oc-export-pdf-btn {
+  background-color: transparent !important;
+  border-color: var(--portal-dark-danger) !important;
+  color: var(--portal-dark-danger) !important;
+}
+
+.ewu-oc-export-pdf-btn:hover {
+  background-color: var(--portal-dark-danger) !important;
+  color: #FFFFFF !important;
+}
+
+/* --- Loader Spinner Overlay --- */
+.ajax-loader-pre {
+  background-color: rgba(10, 10, 22, 0.8) !important;
+}
+
+.ajax-loader {
+  filter: hue-rotate(220deg) brightness(1.2);
+}
+
+/* --- Profile Page (My Profile) Theming --- */
+.my-profile {
+  background-color: var(--portal-dark-bg-panel) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+  border-radius: 12px;
+  padding: 24px !important;
+  box-shadow: var(--portal-dark-shadow) !important;
+  color: var(--portal-dark-text-primary) !important;
+}
+
+.profile-holder {
+  background-color: var(--portal-dark-bg-sidebar) !important;
+  border: 1px solid var(--portal-dark-border) !important;
+  border-radius: 10px;
+  padding: 20px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.profile-holder img {
+  border-radius: 8px;
+  border: 1px solid var(--portal-dark-border) !important;
+}
+
+.profile-holder .info h3 {
+  color: var(--portal-dark-text-primary) !important;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.profile-holder .info span {
+  color: var(--portal-dark-text-secondary) !important;
+  line-height: 1.6;
+}
+
+.midColumn, .profile-details {
+  color: var(--portal-dark-text-primary) !important;
+}
+
+.midColumn h4, .profile-details h4 {
+  color: var(--portal-dark-accent) !important;
+  border-bottom: 1px solid var(--portal-dark-border) !important;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.midColumn .rowIn {
+  color: var(--portal-dark-text-primary) !important;
+  margin-bottom: 12px;
+}
+
+.midColumn .rowIn img {
+  filter: invert(1) brightness(2);
+  margin-right: 8px;
+}
+
+.midColumn p {
+  color: var(--portal-dark-text-secondary) !important;
+  line-height: 1.5;
+}
+
+.profile-details .row {
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+  padding-bottom: 6px;
+  background-color: transparent !important;
+}
+
+.profile-details .row * {
+  background-color: transparent !important;
+}
+
+.profile-details .row div:first-child,
+.profile-details .row .col-md-4,
+.profile-details .row > div:nth-child(1) {
+  color: var(--portal-dark-text-secondary) !important;
+  font-weight: 600 !important;
+}
+
+.profile-details .row div:last-child,
+.profile-details .row .col-md-8,
+.profile-details .row > div:nth-child(2) {
+  color: var(--portal-dark-text-primary) !important;
+}

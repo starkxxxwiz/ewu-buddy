@@ -22,7 +22,7 @@
      ----------------------------------------------------------- */
   var DEFAULT_SETTINGS = {
     enabled: true,
-    theme: 'dark',
+    theme: 'light',
     animations: true,
     toastNotifications: true,
     stickyHeader: true,
@@ -1866,6 +1866,8 @@
   async function handleSettingsUpdate(ns) {
     _settings = ns;
     applyBodyClasses(ns);
+    applyDarkMode(ns.enabled && ns.theme === 'dark');
+    injectThemeToggle();
     if (!ns.enabled) {
       LoginHelperModule.reset();
       RoutineGeneratorModule.reset();
@@ -1873,6 +1875,85 @@
     } else {
       var pi = detectPage();
       loadModules(pi, ns);
+    }
+  }
+
+  function applyDarkMode(isDark) {
+    var pn = location.pathname.toLowerCase();
+    if (pn === '/' || pn === '/account/login' || pn === '/account/login/' || safeQuery('#loginform') || safeQuery('#lblcaptchaAnswer')) {
+      isDark = false;
+    }
+    var existing = safeQuery('#ewu-portal-dark-css');
+    if (isDark) {
+      if (!existing) {
+        var link = document.createElement('link');
+        link.id = 'ewu-portal-dark-css';
+        link.rel = 'stylesheet';
+        link.href = chrome.runtime.getURL('portal-dark.css');
+        document.head.appendChild(link);
+        log('Dark Mode CSS injected');
+      }
+    } else {
+      if (existing) {
+        existing.remove();
+        log('Dark Mode CSS removed');
+      }
+    }
+  }
+
+  function injectThemeToggle() {
+    var pn = location.pathname.toLowerCase();
+    if (pn === '/' || pn === '/account/login' || safeQuery('#loginform') || safeQuery('#lblcaptchaAnswer')) {
+      var toggle = safeQuery('#ewu-theme-toggle');
+      if (toggle) toggle.remove();
+      return;
+    }
+
+    var navNotify = safeQuery('.navbar-right .nav-notify');
+    if (!navNotify) return;
+
+    var isDark = (_settings && _settings.theme === 'dark');
+
+    var existingToggle = safeQuery('#ewu-theme-toggle');
+    if (existingToggle) {
+      existingToggle.classList.toggle('dark-active', isDark);
+      updateIcon(existingToggle.querySelector('svg'), isDark);
+      return;
+    }
+
+    var toggleContainer = document.createElement('div');
+    toggleContainer.id = 'ewu-theme-toggle';
+    toggleContainer.className = 'ewu-theme-toggle-container';
+    if (isDark) {
+      toggleContainer.classList.add('dark-active');
+    }
+
+    toggleContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"></svg>';
+    var svg = toggleContainer.querySelector('svg');
+    updateIcon(svg, isDark);
+
+    navNotify.parentNode.insertBefore(toggleContainer, navNotify);
+
+    toggleContainer.addEventListener('click', async function () {
+      var nextTheme = (_settings.theme === 'dark') ? 'light' : 'dark';
+      _settings.theme = nextTheme;
+
+      toggleContainer.classList.toggle('dark-active', nextTheme === 'dark');
+      updateIcon(toggleContainer.querySelector('svg'), nextTheme === 'dark');
+      applyDarkMode(_settings.enabled && nextTheme === 'dark');
+
+      await saveSettings(_settings);
+      Toast.show(nextTheme === 'dark' ? 'Dark theme enabled' : 'Light theme enabled', 'info', 2000);
+    });
+
+    function updateIcon(svgEl, isDarkTheme) {
+      if (!svgEl) return;
+      if (isDarkTheme) {
+        svgEl.innerHTML = '<circle cx="12" cy="12" r="5" stroke="#FBBF24" stroke-width="2.2" fill="#FBBF24" />' +
+                          '<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#FBBF24" stroke-width="2.2" />';
+      } else {
+        svgEl.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="#FFFFFF" stroke-width="2.2" fill="#FFFFFF" />';
+      }
     }
   }
 
@@ -1911,6 +1992,11 @@
       RoutineGeneratorModule.reset();
       OfferedCoursesEnhancerModule.reset();
 
+      if (_settings) {
+        applyDarkMode(_settings.enabled && _settings.theme === 'dark');
+        injectThemeToggle();
+      }
+
       var pi = detectPage();
       log('Nav ->', pi ? pi.id : 'not a target page');
 
@@ -1929,6 +2015,30 @@
 
     if (!location.href.startsWith(CONFIG.PORTAL_BASE)) return;
 
+    applyDarkMode(_settings.enabled && _settings.theme === 'dark');
+
+    var toggleInterval = setInterval(function () {
+      if (safeQuery('.navbar-right')) {
+        injectThemeToggle();
+        clearInterval(toggleInterval);
+      }
+    }, 250);
+    setTimeout(function () { clearInterval(toggleInterval); }, 8000);
+
+    // Set up tab sync via storage listener
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      chrome.storage.onChanged.addListener(function (changes, areaName) {
+        if (areaName === 'local' && changes[CONFIG.STORAGE_KEY]) {
+          var ns = changes[CONFIG.STORAGE_KEY].newValue;
+          if (ns) {
+            handleSettingsUpdate(ns);
+          }
+        }
+      });
+    }
+
+    setupSPA();
+
     var pageInfo = detectPage();
     if (!pageInfo) {
       log('Not a target page, extension idle.');
@@ -1943,7 +2053,6 @@
     }
 
     loadModules(pageInfo, _settings);
-    setupSPA();
     log('Ready');
   }
 

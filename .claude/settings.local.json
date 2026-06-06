@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(echo \"HOME dir:\"; ls -la C:\\\\Users\\\\Aftab 2>/dev/null | head -30; echo \"---\"; echo \"Looking for project:\"; ls -la \"C:\\\\Users\\\\Aftab\" | grep -i -E \"ewu|extension|xampp|buddy\" 2>/dev/null)",
-      "Read(//c/Users/Aftab/**)"
-    ]
-  }
-}

@@ -33,6 +33,13 @@
       "matches": [
         "https://portal.ewubd.edu/*"
       ],
+      "js": ["themeInit.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://portal.ewubd.edu/*"
+      ],
       "js": [
         "lib/html2canvas.min.js",
         "lib/jspdf.umd.min.js",
@@ -48,7 +55,8 @@
       "resources": [
         "lib/html2canvas.min.js",
         "lib/jspdf.umd.min.js",
-        "pageHook.js"
+        "pageHook.js",
+        "portal-dark.css"
       ],
       "matches": ["https://portal.ewubd.edu/*"]
     }
