@@ -10,11 +10,11 @@
      CONSTANTS & DEFAULTS
      ----------------------------------------------------------- */
   const STORAGE_KEY = 'ewu_portal_helper_settings';
-  const LOG_PREFIX = '[EWU Popup v2.2.0]';
+  const LOG_PREFIX = '[EWU Popup v2.0]';
 
   const DEFAULT_SETTINGS = {
     enabled: true,
-    theme: 'light',
+    theme: 'dark',
     animations: true,
     toastNotifications: true,
     modules: {
@@ -42,7 +42,6 @@
   const els = {
     // General
     toggleEnabled:    document.getElementById('toggleEnabled'),
-    toggleTheme:      document.getElementById('toggleTheme'),
     toggleToast:       document.getElementById('toggleToast'),
     toggleAnimations: document.getElementById('toggleAnimations'),
 
@@ -154,7 +153,6 @@
   function renderUI(settings) {
     // General
     els.toggleEnabled.checked = settings.enabled;
-    els.toggleTheme.checked = settings.theme === 'dark';
     els.toggleToast.checked = settings.toastNotifications !== false;
     els.toggleAnimations.checked = settings.animations;
 
@@ -220,13 +218,6 @@
       s.enabled = els.toggleEnabled.checked;
       await saveSettings(s); broadcastSettings(s);
       showToast(s.enabled ? 'Extension enabled' : 'Extension disabled');
-    });
-
-    els.toggleTheme.addEventListener('change', async () => {
-      const s = await loadSettings();
-      s.theme = els.toggleTheme.checked ? 'dark' : 'light';
-      await saveSettings(s); broadcastSettings(s);
-      showToast(s.theme === 'dark' ? 'Dark theme enabled' : 'Light theme enabled');
     });
 
     els.toggleToast.addEventListener('change', async () => {

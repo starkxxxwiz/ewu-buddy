@@ -48,12 +48,6 @@
 - **Smart Filtering:** Toggle "Show Available" to hide full courses instantly.
 - **PDF Export:** Export currently visible/filtered courses into a paginated, landscape A4 PDF.
 
-### 🌑 Portal-Wide Dark Mode
-- **Premium Theming:** Toggle between light and a cohesive dark theme. Custom HSL-tailored styling covers all core elements including select dropdowns, breadcrumbs, profile details, tables, navigation elements, inputs, and popups.
-- **Instant Load:** Utilizes a highly optimized initial loader injected at `document_start`. This ensures dark mode loads **instantly** on all internal portal pages with absolutely zero white screen flashing. The login page correctly bypasses this to retain its default layout.
-- **Responsive Toggle:** Automatically places a Sun/Moon toggle switch in the top navigation bar (aligned to the left of the notifications bell on PC, and to the right of the profile picture on mobile viewports).
-- **Comprehensive Coverage:** Extensively styles components on all pages such as the `Other Details` grid and dropdown menus so they seamlessly blend with the dark interface.
-
 ### 🔔 Modern Notifications
 - Features sleek, glassmorphism toast notifications with type-tinted backgrounds for updates and alerts.
 
@@ -76,6 +70,12 @@
 4. Select the `ewu-buddy/V4` folder.
 
 > **Note:** Any Chromium-based browser (Brave, Opera, Vivaldi, etc.) that supports Manifest V3 can load this extension via the same "Load unpacked" method.
+
+---
+
+## 🔮 Future Development
+
+- **Advising Page Enhancements:** Plans are in place to add comprehensive table enhancements to the Advising page, making course selection and conflict detection much more intuitive.
 
 ---
 

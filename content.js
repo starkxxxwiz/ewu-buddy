@@ -1,5 +1,5 @@
 /* =============================================================
-   EWU Portal Helper v2.5.0
+   EWU Portal Helper v2.0
    Content Script
    ============================================================= */
 
@@ -14,7 +14,7 @@
     LOG_PREFIX: '[EWU Portal Helper]',
     ROUTINE_LOG: '[EWU Helper][Routine]',
     STORAGE_KEY: 'ewu_portal_helper_settings',
-    VERSION: '2.5.0',
+    VERSION: '2.0',
   };
 
   /* -----------------------------------------------------------
@@ -22,7 +22,7 @@
      ----------------------------------------------------------- */
   var DEFAULT_SETTINGS = {
     enabled: true,
-    theme: 'light',
+    theme: 'dark',
     animations: true,
     toastNotifications: true,
     stickyHeader: true,
@@ -623,12 +623,63 @@
       var hpad = compact ? 8 : 12;
       var self = this;
 
-      // Sort alphabetically then deduplicate by courseCode+sectionName (safety net
-      // against any duplicate objects that may slip through _extractCourses)
+      // Calculate sorting weights and detect Saturday/Friday classes
+      var hasSaturday = false;
+      var hasFriday = false;
+
+      courses.forEach(function (course) {
+        var minSortTime = Infinity;
+        var minDayIndex = Infinity;
+
+        var courseSlots = course.slots || [];
+        if (!courseSlots.length && course.timeSlotName) {
+          courseSlots = [{ timeSlotName: course.timeSlotName, roomName: course.roomName || '' }];
+        }
+
+        courseSlots.forEach(function (slot) {
+          var parsed = self._parseSlot(slot.timeSlotName);
+          if (parsed) {
+            if (parsed.sortTime < minSortTime) {
+              minSortTime = parsed.sortTime;
+            }
+            parsed.days.forEach(function (day) {
+              if (day === 'Saturday') hasSaturday = true;
+              if (day === 'Friday') hasFriday = true;
+
+              var fullWeek = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+              var idx = fullWeek.indexOf(day);
+              if (idx !== -1 && idx < minDayIndex) {
+                minDayIndex = idx;
+              }
+            });
+          }
+        });
+
+        course._minSortTime = minSortTime === Infinity ? 9999 : minSortTime;
+        course._minDayIndex = minDayIndex === Infinity ? 9999 : minDayIndex;
+      });
+
+      // Construct dynamic daysToShow
+      var daysToShow = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+      if (hasSaturday) {
+        daysToShow.unshift('Saturday');
+      }
+      if (hasFriday) {
+        daysToShow.push('Friday');
+      }
+
+      // Sort chronologically by earliest daily start time, then day index, then alphabetically
       var sortedRaw = courses.slice().sort(function (a, b) {
+        if (a._minSortTime !== b._minSortTime) {
+          return a._minSortTime - b._minSortTime;
+        }
+        if (a._minDayIndex !== b._minDayIndex) {
+          return a._minDayIndex - b._minDayIndex;
+        }
         var c = a.courseCode.localeCompare(b.courseCode);
         return c !== 0 ? c : (a.sectionName || 0) - (b.sectionName || 0);
       });
+
       var _seenKeys = {};
       var sorted = [];
       for (var ddi = 0; ddi < sortedRaw.length; ddi++) {
@@ -641,7 +692,7 @@
       // Each entry stores all matching slots for that (course, section, day) pair
       // Key structure: dayMap[day] = Array of { courseCode, sectionName, slots:[] }
       var dayMap = {};
-      this.DAY_ORDER.forEach(function (d) { dayMap[d] = []; });
+      daysToShow.forEach(function (d) { dayMap[d] = []; });
 
       for (var ci = 0; ci < sorted.length; ci++) {
         var course = sorted[ci];
@@ -658,7 +709,7 @@
 
           for (var di = 0; di < parsed.days.length; di++) {
             var day = parsed.days[di];
-            if (!dayMap[day]) continue; // day not in DAY_ORDER (e.g. Saturday/Friday)
+            if (!dayMap[day]) continue; // day not in daysToShow (e.g. Saturday/Friday if not in schedule)
 
             // Find or create entry for this course on this day
             var existing = null;
@@ -684,7 +735,7 @@
       }
 
       // Sort slots within each day entry by start time
-      this.DAY_ORDER.forEach(function (d) {
+      daysToShow.forEach(function (d) {
         dayMap[d].forEach(function (entry) {
           entry.slots.sort(function (a, b) { return a.sortTime - b.sortTime; });
         });
@@ -721,8 +772,8 @@
       h += '</tr></thead><tbody>';
 
       // Table rows: one per day
-      for (var di2 = 0; di2 < this.DAY_ORDER.length; di2++) {
-        var day = this.DAY_ORDER[di2];
+      for (var di2 = 0; di2 < daysToShow.length; di2++) {
+        var day = daysToShow[di2];
         h += '<tr>';
         // Day label cell: fixed narrow column
         h += '<td style="background:' + th.db + ';padding:' + pad + 'px ' + hpad + 'px;border:1px solid ' + bdr + ';font-weight:700;text-align:center;white-space:nowrap;font-size:' + (compact ? '11px' : '13px') + ';">' + day + '</td>';
@@ -1220,7 +1271,9 @@
       this._buttonWatcherAttached = true;
       var self = this;
       document.addEventListener('click', function (event) {
-        var text = event.target ? (event.target.innerText || event.target.textContent || '') : '';
+        var btn = event.target.closest ? event.target.closest('[ng-click="search()"], .btn') : null;
+        if (!btn) return;
+        var text = (btn.innerText || btn.textContent || '').trim();
         if (text.indexOf('Show Offered Courses') !== -1 || text.indexOf('Show Offered Course') !== -1) {
           self._apiData = [];
           self._extractedData = [];
@@ -1866,8 +1919,6 @@
   async function handleSettingsUpdate(ns) {
     _settings = ns;
     applyBodyClasses(ns);
-    applyDarkMode(ns.enabled && ns.theme === 'dark');
-    injectThemeToggle();
     if (!ns.enabled) {
       LoginHelperModule.reset();
       RoutineGeneratorModule.reset();
@@ -1875,85 +1926,6 @@
     } else {
       var pi = detectPage();
       loadModules(pi, ns);
-    }
-  }
-
-  function applyDarkMode(isDark) {
-    var pn = location.pathname.toLowerCase();
-    if (pn === '/' || pn === '/account/login' || pn === '/account/login/' || safeQuery('#loginform') || safeQuery('#lblcaptchaAnswer')) {
-      isDark = false;
-    }
-    var existing = safeQuery('#ewu-portal-dark-css');
-    if (isDark) {
-      if (!existing) {
-        var link = document.createElement('link');
-        link.id = 'ewu-portal-dark-css';
-        link.rel = 'stylesheet';
-        link.href = chrome.runtime.getURL('portal-dark.css');
-        document.head.appendChild(link);
-        log('Dark Mode CSS injected');
-      }
-    } else {
-      if (existing) {
-        existing.remove();
-        log('Dark Mode CSS removed');
-      }
-    }
-  }
-
-  function injectThemeToggle() {
-    var pn = location.pathname.toLowerCase();
-    if (pn === '/' || pn === '/account/login' || safeQuery('#loginform') || safeQuery('#lblcaptchaAnswer')) {
-      var toggle = safeQuery('#ewu-theme-toggle');
-      if (toggle) toggle.remove();
-      return;
-    }
-
-    var navNotify = safeQuery('.navbar-right .nav-notify');
-    if (!navNotify) return;
-
-    var isDark = (_settings && _settings.theme === 'dark');
-
-    var existingToggle = safeQuery('#ewu-theme-toggle');
-    if (existingToggle) {
-      existingToggle.classList.toggle('dark-active', isDark);
-      updateIcon(existingToggle.querySelector('svg'), isDark);
-      return;
-    }
-
-    var toggleContainer = document.createElement('div');
-    toggleContainer.id = 'ewu-theme-toggle';
-    toggleContainer.className = 'ewu-theme-toggle-container';
-    if (isDark) {
-      toggleContainer.classList.add('dark-active');
-    }
-
-    toggleContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"></svg>';
-    var svg = toggleContainer.querySelector('svg');
-    updateIcon(svg, isDark);
-
-    navNotify.parentNode.insertBefore(toggleContainer, navNotify);
-
-    toggleContainer.addEventListener('click', async function () {
-      var nextTheme = (_settings.theme === 'dark') ? 'light' : 'dark';
-      _settings.theme = nextTheme;
-
-      toggleContainer.classList.toggle('dark-active', nextTheme === 'dark');
-      updateIcon(toggleContainer.querySelector('svg'), nextTheme === 'dark');
-      applyDarkMode(_settings.enabled && nextTheme === 'dark');
-
-      await saveSettings(_settings);
-      Toast.show(nextTheme === 'dark' ? 'Dark theme enabled' : 'Light theme enabled', 'info', 2000);
-    });
-
-    function updateIcon(svgEl, isDarkTheme) {
-      if (!svgEl) return;
-      if (isDarkTheme) {
-        svgEl.innerHTML = '<circle cx="12" cy="12" r="5" stroke="#FBBF24" stroke-width="2.2" fill="#FBBF24" />' +
-                          '<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#FBBF24" stroke-width="2.2" />';
-      } else {
-        svgEl.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="#FFFFFF" stroke-width="2.2" fill="#FFFFFF" />';
-      }
     }
   }
 
@@ -1992,11 +1964,6 @@
       RoutineGeneratorModule.reset();
       OfferedCoursesEnhancerModule.reset();
 
-      if (_settings) {
-        applyDarkMode(_settings.enabled && _settings.theme === 'dark');
-        injectThemeToggle();
-      }
-
       var pi = detectPage();
       log('Nav ->', pi ? pi.id : 'not a target page');
 
@@ -2015,30 +1982,6 @@
 
     if (!location.href.startsWith(CONFIG.PORTAL_BASE)) return;
 
-    applyDarkMode(_settings.enabled && _settings.theme === 'dark');
-
-    var toggleInterval = setInterval(function () {
-      if (safeQuery('.navbar-right')) {
-        injectThemeToggle();
-        clearInterval(toggleInterval);
-      }
-    }, 250);
-    setTimeout(function () { clearInterval(toggleInterval); }, 8000);
-
-    // Set up tab sync via storage listener
-    if (typeof chrome !== 'undefined' && chrome.storage) {
-      chrome.storage.onChanged.addListener(function (changes, areaName) {
-        if (areaName === 'local' && changes[CONFIG.STORAGE_KEY]) {
-          var ns = changes[CONFIG.STORAGE_KEY].newValue;
-          if (ns) {
-            handleSettingsUpdate(ns);
-          }
-        }
-      });
-    }
-
-    setupSPA();
-
     var pageInfo = detectPage();
     if (!pageInfo) {
       log('Not a target page, extension idle.');
@@ -2048,11 +1991,12 @@
     log('Target page:', pageInfo.id, '-', pageInfo.label);
     applyBodyClasses(_settings);
 
-    if (_settings.enabled) {
+    if (_settings.enabled && pageInfo.id === 'login') {
       Toast.show('Extension active', 'success', 2500);
     }
 
     loadModules(pageInfo, _settings);
+    setupSPA();
     log('Ready');
   }
 

@@ -1,6 +1,6 @@
 # EWU Portal Helper (V4) — Technical & Operational Walkthrough
 
-Welcome to the comprehensive technical documentation for **EWU Portal Helper (v2.5.0)**. This document explains the extension's entire architecture, design patterns, file structure, operational steps, data flows, and sub-systems from **A to Z** in a way that is clear and understandable for both developers and non-technical readers.
+Welcome to the comprehensive technical documentation for **EWU Portal Helper (v2.0)**. This document explains the extension's entire architecture, design patterns, file structure, operational steps, data flows, and sub-systems from **A to Z** in a way that is clear and understandable for both developers and non-technical readers.
 
 ---
 
@@ -209,4 +209,4 @@ When testing changes locally, make sure to verify:
 - [ ] **Export Options:** Verify that both PNG and PDF downloads function correctly, preserve formatting, and save to your local machine.
 
 ---
-*Document Version: 1.0.0 | Date: June 2026 | Project: EWU Portal Helper V4*
+*Document Version: 2.0 | Date: June 2026 | Project: EWU Portal Helper V4*
