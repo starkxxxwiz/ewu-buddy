@@ -1,0 +1,24 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Temporary & Scratch Files
+scratch/
+*.log
+.system_generated/
+
+# Local Testing Scripts
+demo_*.html
+get_all_routine.*
+
+# Exclude Portal Info
+Portal Info/

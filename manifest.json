@@ -36,6 +36,8 @@
       "js": [
         "lib/html2canvas.min.js",
         "lib/jspdf.umd.min.js",
+        "lib/pdf.min.js",
+        "lib/pdf.worker.min.js",
         "content.js"
       ],
       "css": ["styles.css"],
@@ -48,9 +50,13 @@
       "resources": [
         "lib/html2canvas.min.js",
         "lib/jspdf.umd.min.js",
+        "lib/pdf.min.js",
+        "lib/pdf.worker.min.js",
         "pageHook.js"
       ],
-      "matches": ["https://portal.ewubd.edu/*"]
+      "matches": [
+        "https://portal.ewubd.edu/*"
+      ]
     }
   ]
 }
